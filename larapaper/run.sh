@@ -26,6 +26,8 @@ APP_KEY=$(cat /data/app_key)
 # ── Persistent SQLite database (in addon_configs/larapaper via SMB) ──────────
 DB_PATH=/var/www/html/database/database.sqlite
 
+mkdir -p /addon_config
+
 if [ ! -f /addon_config/database.sqlite ]; then
     echo "[larapaper] Initializing database..."
     [ -f "${DB_PATH}" ] && cp "${DB_PATH}" /addon_config/database.sqlite || touch /addon_config/database.sqlite
