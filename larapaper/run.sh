@@ -28,6 +28,7 @@ DB_PATH=/var/www/html/database/database.sqlite
 
 mkdir -p /addon_config
 chmod 775 /addon_config
+chown www-data:www-data /addon_config
 
 if [ ! -f /addon_config/database.sqlite ]; then
     echo "[larapaper] Initializing database..."
