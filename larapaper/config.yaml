@@ -2,28 +2,25 @@ name: LaraPaper
 description: >-
   Self-hosted TRMNL BYOS server. Manage e-ink devices and generate screens
   using plugins, recipes, mashups, and custom markup.
-version: "1.0.0"
+version: "1.0.5"
 slug: larapaper
 homeassistant: "2024.1.0"
-url: https://github.com/YOUR_GITHUB_USERNAME/ha-addon-larapaper
+url: https://github.com/ArmenGhazaryan/ha-addon-larapaper
 arch:
   - aarch64
   - amd64
 startup: application
 boot: auto
 init: false
-webui: http://[HOST]:[PORT:8080]
-
-ports:
-  8080/tcp: 4567
-ports_description:
-  4567/tcp: "LaraPaper web UI and TRMNL device API"
+host_network: true
+ingress: true
+ingress_port: 8080
 
 map:
   - data:rw
 
 options:
-  app_url: "http://homeassistant.local:4567"
+  app_url: "http://homeassistant.local:8080"
   app_timezone: "UTC"
   registration_enabled: true
   log_level: "warning"
