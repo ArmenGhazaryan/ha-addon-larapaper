@@ -12,6 +12,7 @@ arch:
 startup: application
 boot: auto
 init: false
+webui: http://[HOST]:[PORT:4567]
 
 ports:
   4567/tcp: 8080
