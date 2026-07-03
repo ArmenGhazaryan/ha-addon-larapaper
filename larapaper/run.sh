@@ -16,25 +16,24 @@ TRMNL_PROXY_REFRESH_MINUTES=$(jq --raw-output '.trmnl_proxy_refresh_minutes' "${
 
 [ "${REGISTRATION_ENABLED}" = "true" ] && REGISTRATION_ENABLED=1 || REGISTRATION_ENABLED=0
 
-# ── Persistent APP_KEY (stays in /data, not SMB accessible) ──────────────────
+# ── Persistent APP_KEY ────────────────────────────────────────────────────────
 if [ ! -f /data/app_key ]; then
     echo "[larapaper] Generating APP_KEY..."
     php -r "echo 'base64:'.base64_encode(random_bytes(32));" > /data/app_key
 fi
 APP_KEY=$(cat /data/app_key)
 
-# ── Persistent SQLite database (in /share/larapaper, SMB accessible) ──────────
-mkdir -p /share/larapaper
+# ── Persistent SQLite database (in addon_configs/larapaper via SMB) ──────────
 DB_PATH=/var/www/html/database/database.sqlite
 
-if [ ! -f /share/larapaper/database.sqlite ]; then
+if [ ! -f /addon_config/database.sqlite ]; then
     echo "[larapaper] Initializing database..."
-    [ -f "${DB_PATH}" ] && cp "${DB_PATH}" /share/larapaper/database.sqlite || touch /share/larapaper/database.sqlite
+    [ -f "${DB_PATH}" ] && cp "${DB_PATH}" /addon_config/database.sqlite || touch /addon_config/database.sqlite
 fi
 
 rm -f "${DB_PATH}"
-ln -sf /share/larapaper/database.sqlite "${DB_PATH}"
-chown www-data:www-data /share/larapaper/database.sqlite
+ln -sf /addon_config/database.sqlite "${DB_PATH}"
+chown www-data:www-data /addon_config/database.sqlite
 
 # ── Export environment ────────────────────────────────────────────────────────
 export APP_ENV=production
