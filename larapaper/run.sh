@@ -43,6 +43,10 @@ ln -sf /addon_config/database.sqlite "${DB_PATH}"
 chown www-data:www-data /addon_config/database.sqlite
 echo "[larapaper] Database ready at /addon_config/database.sqlite"
 
+# ── Fix storage permissions ───────────────────────────────────────────────────
+chown -R www-data:www-data /var/www/html/storage
+chmod -R 775 /var/www/html/storage
+
 # ── Export environment ────────────────────────────────────────────────────────
 export APP_ENV=production
 export APP_DEBUG=false
@@ -54,6 +58,7 @@ export REGISTRATION_ENABLED="${REGISTRATION_ENABLED}"
 export LOG_LEVEL="${LOG_LEVEL}"
 export TRUSTED_PROXIES="*"
 export FORCE_HTTPS=0
+export SESSION_DRIVER=cookie
 export SESSION_SECURE_COOKIE=false
 export PHP_OPCACHE_ENABLE=1
 export PHP_MEMORY_LIMIT="${PHP_MEMORY_LIMIT}"
