@@ -23,19 +23,25 @@ if [ ! -f /data/app_key ]; then
 fi
 APP_KEY=$(cat /data/app_key)
 
-# ── Persistent SQLite database (in addon_configs/larapaper via SMB) ──────────
+# ── Persistent SQLite database ────────────────────────────────────────────────
 DB_PATH=/var/www/html/database/database.sqlite
 
 mkdir -p /addon_config
+echo "[larapaper] /addon_config contents: $(ls /addon_config)"
 
 if [ ! -f /addon_config/database.sqlite ]; then
     echo "[larapaper] Initializing database..."
-    [ -f "${DB_PATH}" ] && cp "${DB_PATH}" /addon_config/database.sqlite || touch /addon_config/database.sqlite
+    if [ -f "${DB_PATH}" ]; then
+        cp "${DB_PATH}" /addon_config/database.sqlite
+    else
+        touch /addon_config/database.sqlite
+    fi
 fi
 
 rm -f "${DB_PATH}"
 ln -sf /addon_config/database.sqlite "${DB_PATH}"
 chown www-data:www-data /addon_config/database.sqlite
+echo "[larapaper] Database ready at /addon_config/database.sqlite"
 
 # ── Export environment ────────────────────────────────────────────────────────
 export APP_ENV=production
@@ -48,6 +54,7 @@ export REGISTRATION_ENABLED="${REGISTRATION_ENABLED}"
 export LOG_LEVEL="${LOG_LEVEL}"
 export TRUSTED_PROXIES="*"
 export FORCE_HTTPS=0
+export SESSION_SECURE_COOKIE=false
 export PHP_OPCACHE_ENABLE=1
 export PHP_MEMORY_LIMIT="${PHP_MEMORY_LIMIT}"
 export PHP_FPM_PM_CONTROL=ondemand
