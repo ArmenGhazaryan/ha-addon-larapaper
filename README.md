@@ -8,8 +8,4 @@ Supports `aarch64` and `amd64`.
 
 ## Installation
 
-1. Click the badge above to add this repository to Home Assistant, or add it manually under **Settings → Add-ons → Add-on Store → ⋮ → Repositories**.
-2. Find **LaraPaper** in the store and click **Install**.
-3. Configure the add-on (at minimum set `app_url`), then click **Start**.
-
-See the [add-on documentation](larapaper/DOCS.md) for full configuration details.
+1. Click the badge above, or add this URL manually under **Settings → Add-ons → Add-on Store → ⋮ → Repositories**:
