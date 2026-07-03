@@ -18,7 +18,7 @@ ingress_port: 8080
 
 map:
   - data:rw
-  - share:rw
+  - addon_config:rw
 
 options:
   app_url: "http://homeassistant.local:8080"
