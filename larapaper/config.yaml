@@ -1,0 +1,44 @@
+name: LaraPaper
+description: >-
+  Self-hosted TRMNL BYOS server. Manage e-ink devices and generate screens
+  using plugins, recipes, mashups, and custom markup.
+version: "1.0.0"
+slug: larapaper
+homeassistant: "2024.1.0"
+url: https://github.com/YOUR_GITHUB_USERNAME/ha-addon-larapaper
+arch:
+  - aarch64
+  - amd64
+startup: application
+boot: auto
+init: false
+
+ports:
+  4567/tcp: 4567
+ports_description:
+  4567/tcp: "LaraPaper web UI and TRMNL device API"
+
+map:
+  - data:rw
+
+options:
+  app_url: "http://homeassistant.local:4567"
+  app_timezone: "UTC"
+  registration_enabled: true
+  log_level: "warning"
+  php_memory_limit: "512M"
+  php_fpm_pm_max_children: 4
+  php_fpm_pm_max_spare_servers: 2
+  trmnl_proxy_base_url: "https://trmnl.app"
+  trmnl_proxy_refresh_minutes: 15
+
+schema:
+  app_url: str
+  app_timezone: str
+  registration_enabled: bool
+  log_level: "list(debug|info|warning|error)"
+  php_memory_limit: str
+  php_fpm_pm_max_children: int
+  php_fpm_pm_max_spare_servers: int
+  trmnl_proxy_base_url: str
+  trmnl_proxy_refresh_minutes: int
