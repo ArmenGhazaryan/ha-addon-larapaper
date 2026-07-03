@@ -2,7 +2,7 @@ name: LaraPaper
 description: >-
   Self-hosted TRMNL BYOS server. Manage e-ink devices and generate screens
   using plugins, recipes, mashups, and custom markup.
-version: "1.0.5"
+version: "1.0.10"
 slug: larapaper
 homeassistant: "2024.1.0"
 url: https://github.com/ArmenGhazaryan/ha-addon-larapaper
