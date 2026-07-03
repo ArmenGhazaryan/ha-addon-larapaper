@@ -23,27 +23,26 @@ if [ ! -f /data/app_key ]; then
 fi
 APP_KEY=$(cat /data/app_key)
 
-# ── Persistent SQLite database ────────────────────────────────────────────────
+# ── Persistent SQLite database (/config = addon_configs SMB share) ────────────
 DB_PATH=/var/www/html/database/database.sqlite
 
-mkdir -p /addon_config
-chmod 775 /addon_config
-chown www-data:www-data /addon_config
+chown 82:82 /config
+chmod 775 /config
 
-if [ ! -f /addon_config/database.sqlite ]; then
+if [ ! -f /config/database.sqlite ]; then
     echo "[larapaper] Initializing database..."
     if [ -f "${DB_PATH}" ]; then
-        cp "${DB_PATH}" /addon_config/database.sqlite
+        cp "${DB_PATH}" /config/database.sqlite
     else
-        touch /addon_config/database.sqlite
+        touch /config/database.sqlite
     fi
 fi
 
-chmod 664 /addon_config/database.sqlite
-chown www-data:www-data /addon_config/database.sqlite
+chmod 664 /config/database.sqlite
+chown www-data:www-data /config/database.sqlite
 rm -f "${DB_PATH}"
-ln -sf /addon_config/database.sqlite "${DB_PATH}"
-echo "[larapaper] Database ready at /addon_config/database.sqlite"
+ln -sf /config/database.sqlite "${DB_PATH}"
+echo "[larapaper] Database ready at /config/database.sqlite"
 
 # ── Fix storage permissions ───────────────────────────────────────────────────
 chown -R www-data:www-data /var/www/html/storage
