@@ -27,7 +27,7 @@ APP_KEY=$(cat /data/app_key)
 DB_PATH=/var/www/html/database/database.sqlite
 
 mkdir -p /addon_config
-echo "[larapaper] /addon_config contents: $(ls /addon_config)"
+chmod 775 /addon_config
 
 if [ ! -f /addon_config/database.sqlite ]; then
     echo "[larapaper] Initializing database..."
@@ -38,9 +38,10 @@ if [ ! -f /addon_config/database.sqlite ]; then
     fi
 fi
 
+chmod 664 /addon_config/database.sqlite
+chown www-data:www-data /addon_config/database.sqlite
 rm -f "${DB_PATH}"
 ln -sf /addon_config/database.sqlite "${DB_PATH}"
-chown www-data:www-data /addon_config/database.sqlite
 echo "[larapaper] Database ready at /addon_config/database.sqlite"
 
 # ── Fix storage permissions ───────────────────────────────────────────────────
