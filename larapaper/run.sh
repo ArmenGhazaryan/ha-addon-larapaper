@@ -14,27 +14,27 @@ PHP_FPM_PM_MAX_SPARE_SERVERS=$(jq --raw-output '.php_fpm_pm_max_spare_servers' "
 TRMNL_PROXY_BASE_URL=$(jq --raw-output '.trmnl_proxy_base_url' "${OPTIONS}")
 TRMNL_PROXY_REFRESH_MINUTES=$(jq --raw-output '.trmnl_proxy_refresh_minutes' "${OPTIONS}")
 
-# Convert JSON bool to integer
 [ "${REGISTRATION_ENABLED}" = "true" ] && REGISTRATION_ENABLED=1 || REGISTRATION_ENABLED=0
 
-# ── Persistent APP_KEY ────────────────────────────────────────────────────────
+# ── Persistent APP_KEY (stays in /data, not SMB accessible) ──────────────────
 if [ ! -f /data/app_key ]; then
     echo "[larapaper] Generating APP_KEY..."
     php -r "echo 'base64:'.base64_encode(random_bytes(32));" > /data/app_key
 fi
 APP_KEY=$(cat /data/app_key)
 
-# ── Persistent SQLite database ────────────────────────────────────────────────
+# ── Persistent SQLite database (in /share/larapaper, SMB accessible) ──────────
+mkdir -p /share/larapaper
 DB_PATH=/var/www/html/database/database.sqlite
 
-if [ ! -f /data/database.sqlite ]; then
+if [ ! -f /share/larapaper/database.sqlite ]; then
     echo "[larapaper] Initializing database..."
-    [ -f "${DB_PATH}" ] && cp "${DB_PATH}" /data/database.sqlite || touch /data/database.sqlite
+    [ -f "${DB_PATH}" ] && cp "${DB_PATH}" /share/larapaper/database.sqlite || touch /share/larapaper/database.sqlite
 fi
 
 rm -f "${DB_PATH}"
-ln -sf /data/database.sqlite "${DB_PATH}"
-chown www-data:www-data /data/database.sqlite
+ln -sf /share/larapaper/database.sqlite "${DB_PATH}"
+chown www-data:www-data /share/larapaper/database.sqlite
 
 # ── Export environment ────────────────────────────────────────────────────────
 export APP_ENV=production
