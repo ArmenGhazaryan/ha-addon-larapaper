@@ -14,8 +14,8 @@ boot: auto
 init: false
 host_network: true
 ingress: true
-ingress_port: 4567
-webui: http://[HOST]:[PORT:4567]
+ingress_port: 8080
+webui: http://[HOST]:[PORT:8080]
 
 map:
   - data:rw
