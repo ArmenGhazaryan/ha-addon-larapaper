@@ -49,7 +49,6 @@ chown -R www-data:www-data /var/www/html/storage
 chmod -R 775 /var/www/html/storage
 
 # ── Export environment ────────────────────────────────────────────────────────
-export NGINX_PORT=4567
 export APP_ENV=production
 export APP_DEBUG=false
 export APP_NAME=LaraPaper
