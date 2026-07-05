@@ -15,7 +15,7 @@ init: false
 host_network: true
 ingress: true
 ingress_port: 4567
-webui: http://[HOST]:4567
+webui: http://[HOST]:[PORT:4567]
 
 map:
   - data:rw
