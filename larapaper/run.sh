@@ -17,6 +17,13 @@ TRMNL_PROXY_REFRESH_MINUTES=$(jq --raw-output '.trmnl_proxy_refresh_minutes' "${
 [ "${REGISTRATION_ENABLED}" = "true" ] && REGISTRATION_ENABLED=1 || REGISTRATION_ENABLED=0
 
 # ── Persistent APP_KEY ────────────────────────────────────────────────────────
+# One-time import: drop an existing key (e.g. migrated from another LaraPaper
+# server) into the config share as "app_key"; it is moved into /data and removed.
+if [ -s /config/app_key ]; then
+    echo "[larapaper] Importing APP_KEY from /config/app_key..."
+    tr -d '\r\n' < /config/app_key > /data/app_key
+    rm -f /config/app_key
+fi
 if [ ! -f /data/app_key ]; then
     echo "[larapaper] Generating APP_KEY..."
     php -r "echo 'base64:'.base64_encode(random_bytes(32));" > /data/app_key
