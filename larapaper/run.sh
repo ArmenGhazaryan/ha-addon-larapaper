@@ -8,11 +8,11 @@ APP_URL=$(jq --raw-output '.app_url' "${OPTIONS}")
 APP_TIMEZONE=$(jq --raw-output '.app_timezone' "${OPTIONS}")
 REGISTRATION_ENABLED=$(jq --raw-output '.registration_enabled' "${OPTIONS}")
 LOG_LEVEL=$(jq --raw-output '.log_level' "${OPTIONS}")
-PHP_MEMORY_LIMIT=$(jq --raw-output '.php_memory_limit' "${OPTIONS}")
-PHP_FPM_PM_MAX_CHILDREN=$(jq --raw-output '.php_fpm_pm_max_children' "${OPTIONS}")
-PHP_FPM_PM_MAX_SPARE_SERVERS=$(jq --raw-output '.php_fpm_pm_max_spare_servers' "${OPTIONS}")
-TRMNL_PROXY_BASE_URL=$(jq --raw-output '.trmnl_proxy_base_url' "${OPTIONS}")
-TRMNL_PROXY_REFRESH_MINUTES=$(jq --raw-output '.trmnl_proxy_refresh_minutes' "${OPTIONS}")
+PHP_MEMORY_LIMIT=$(jq --raw-output '.php_memory_limit // "512M"' "${OPTIONS}")
+PHP_FPM_PM_MAX_CHILDREN=$(jq --raw-output '.php_fpm_pm_max_children // "4"' "${OPTIONS}")
+PHP_FPM_PM_MAX_SPARE_SERVERS=$(jq --raw-output '.php_fpm_pm_max_spare_servers // "2"' "${OPTIONS}")
+TRMNL_PROXY_BASE_URL=$(jq --raw-output '.trmnl_proxy_base_url // "https://trmnl.app"' "${OPTIONS}")
+TRMNL_PROXY_REFRESH_MINUTES=$(jq --raw-output '.trmnl_proxy_refresh_minutes // "15"' "${OPTIONS}")
 
 [ "${REGISTRATION_ENABLED}" = "true" ] && REGISTRATION_ENABLED=1 || REGISTRATION_ENABLED=0
 

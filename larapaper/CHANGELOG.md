@@ -1,3 +1,10 @@
+## 1.0.17
+
+- Friendly option names and descriptions in the Configuration tab
+- Advanced options (PHP workers, memory, cloud proxy) are now optional with sensible defaults; set them under "Show unused optional configuration options"
+- Pin LaraPaper to a specific upstream release (0.43.1); a scheduled GitHub workflow bumps it when upstream publishes a new release
+- Remove the "Open Web UI" button (it pointed at the Home Assistant host name over HTTPS, which LaraPaper does not serve)
+
 ## 1.0.16
 
 - Disable Home Assistant ingress: LaraPaper builds absolute asset URLs and does not support running under the ingress sub-path, so the page loaded without CSS/JS. Open the web UI on port 8080 instead ("Open Web UI" button) and set `app_url` to that address
