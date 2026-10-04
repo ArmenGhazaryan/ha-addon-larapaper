@@ -1,0 +1,46 @@
+name: Track upstream LaraPaper releases
+
+on:
+  schedule:
+    - cron: "17 6 * * *"   # daily
+  workflow_dispatch:
+
+permissions:
+  contents: write
+
+jobs:
+  bump:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Find latest upstream release
+        id: up
+        run: |
+          latest=$(git ls-remote --tags --refs https://github.com/usetrmnl/larapaper.git \
+            | awk -F/ '{print $3}' | grep -E '^[0-9]+\.[0-9]+\.[0-9]+$' | sort -V | tail -1)
+          current=$(grep -oE 'larapaper:[0-9]+\.[0-9]+\.[0-9]+' larapaper/build.yaml | head -1 | cut -d: -f2)
+          echo "latest=$latest" >> "$GITHUB_OUTPUT"
+          echo "current=$current" >> "$GITHUB_OUTPUT"
+          echo "upstream=$latest pinned=$current"
+
+      - name: Check image exists for both architectures
+        if: steps.up.outputs.latest != steps.up.outputs.current && steps.up.outputs.latest != ''
+        run: |
+          docker manifest inspect ghcr.io/usetrmnl/larapaper:${{ steps.up.outputs.latest }} \
+            | grep -q '"arm64"' && echo "arm64 ok"
+
+      - name: Bump add-on
+        if: steps.up.outputs.latest != steps.up.outputs.current && steps.up.outputs.latest != ''
+        env:
+          NEW: ${{ steps.up.outputs.latest }}
+        run: |
+          sed -i -E "s#(ghcr.io/usetrmnl/larapaper:)[0-9]+\.[0-9]+\.[0-9]+#\1${NEW}#g" larapaper/build.yaml
+          ver=$(grep -oE '^version: "[0-9]+\.[0-9]+\.[0-9]+"' larapaper/config.yaml | grep -oE '[0-9]+\.[0-9]+\.[0-9]+')
+          IFS=. read -r a b c <<< "$ver"; newver="$a.$b.$((c+1))"
+          sed -i -E "s/^version: \"[0-9.]+\"/version: \"${newver}\"/" larapaper/config.yaml
+          printf '## %s\n\n- Update LaraPaper to %s (https://github.com/usetrmnl/larapaper/releases/tag/%s)\n\n' "$newver" "$NEW" "$NEW" | cat - larapaper/CHANGELOG.md > /tmp/cl && mv /tmp/cl larapaper/CHANGELOG.md
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git commit -am "Update LaraPaper to ${NEW} (add-on ${newver})"
+          git push
