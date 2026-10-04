@@ -1,0 +1,38 @@
+configuration:
+  app_url:
+    name: LaraPaper address
+    description: >-
+      The web address your TRMNL screens use to reach LaraPaper, for example
+      http://192.168.1.10:8080. Use your Home Assistant's IP address and plain http.
+  app_timezone:
+    name: Time zone
+    description: Your time zone, used for schedules and clocks, for example America/New_York.
+  registration_enabled:
+    name: Allow new sign-ups
+    description: >-
+      Shows a "Register" button on the login page. Turn it on only to create
+      your first account, then turn it off.
+  log_level:
+    name: Log detail
+    description: How much the add-on writes to its Log tab. Leave on "warning" unless troubleshooting.
+  php_memory_limit:
+    name: Memory per screen render
+    description: >-
+      How much memory one screen render may use, for example 512M or 1G.
+      Raise it if complex screens fail to render. Default 512M.
+  php_fpm_pm_max_children:
+    name: Screens rendered at once
+    description: >-
+      How many screens can be drawn at the same time. Each one uses a browser
+      in the background, so lower it if memory is tight. Default 4.
+  php_fpm_pm_max_spare_servers:
+    name: Ready-to-go workers
+    description: How many workers wait idle so pages open faster. Default 2.
+  trmnl_proxy_base_url:
+    name: TRMNL cloud address
+    description: >-
+      Only for screens set to mix in content from your trmnl.app account.
+      Default https://trmnl.app. Leave unchanged.
+  trmnl_proxy_refresh_minutes:
+    name: TRMNL cloud refresh (minutes)
+    description: How often content from trmnl.app is fetched. Default 15.
