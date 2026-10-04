@@ -1,3 +1,9 @@
+## 1.0.18
+
+- Bring back the "Open Web UI" button. It opens LaraPaper on port 8080 of the address you use for Home Assistant
+- Fix friendly option names not showing: the translations file is now in the add-on folder
+- Plainer option names and descriptions
+
 ## 1.0.17
 
 - Friendly option names and descriptions in the Configuration tab
