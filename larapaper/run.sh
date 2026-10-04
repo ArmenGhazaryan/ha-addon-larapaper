@@ -51,9 +51,23 @@ rm -f "${DB_PATH}"
 ln -sf /config/database.sqlite "${DB_PATH}"
 echo "[larapaper] Database ready at /config/database.sqlite"
 
+# ── Persistent file storage (/config/storage) ─────────────────────────────────
+# Rendered screens and uploaded images live in storage/app. Keep them in the
+# add-on config folder so they survive restarts and updates (and are included
+# in backups). Files shipped with LaraPaper (default/sleep screens) are copied
+# over on every start so they stay current; your own files are never removed.
+APP_STORAGE=/var/www/html/storage/app
+mkdir -p /config/storage/app
+if [ -d "${APP_STORAGE}" ] && [ ! -L "${APP_STORAGE}" ]; then
+    cp -a "${APP_STORAGE}/." /config/storage/app/
+    rm -rf "${APP_STORAGE}"
+fi
+ln -sfn /config/storage/app "${APP_STORAGE}"
+echo "[larapaper] File storage ready at /config/storage"
+
 # ── Fix storage permissions ───────────────────────────────────────────────────
-chown -R www-data:www-data /var/www/html/storage
-chmod -R 775 /var/www/html/storage
+chown -R www-data:www-data /var/www/html/storage /config/storage
+chmod -R 775 /var/www/html/storage /config/storage
 
 # ── Export environment ────────────────────────────────────────────────────────
 export APP_ENV=production

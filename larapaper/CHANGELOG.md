@@ -1,3 +1,7 @@
+## 1.0.19
+
+- Keep rendered screens and uploaded images in the add-on config folder (`/config/storage`), so they survive restarts and updates and are included in backups. Before, they were lost on every restart, and the device and the web preview pointed at a missing image until the next render
+
 ## 1.0.18
 
 - Bring back the "Open Web UI" button. It opens LaraPaper on port 8080 of the address you use for Home Assistant
