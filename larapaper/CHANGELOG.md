@@ -1,3 +1,7 @@
+## 1.0.20
+
+- Update LaraPaper to 0.44.0 (https://github.com/usetrmnl/larapaper/releases/tag/0.44.0)
+
 ## 1.0.19
 
 - Keep rendered screens and uploaded images in the add-on config folder (`/config/storage`), so they survive restarts and updates and are included in backups. Before, they were lost on every restart, and the device and the web preview pointed at a missing image until the next render
